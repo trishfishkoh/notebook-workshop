@@ -1,0 +1,76 @@
+---
+title: "R Notebook Mini Workshop"
+author: "Trish Koh"
+date: "29/11/22"
+output: 
+  html_notebook:
+    theme: flatly
+    toc: true
+    toc_float: true
+---
+
+In an [R Markdown](http://rmarkdown.rstudio.com) Notebook, you can write your ideas in the same document as your code. 
+
+You will be coding within "code chunks" which you can create using *command + option + I*. Everything outside of these chunks are just plain text and do not affect your code. 
+
+You can also do some *fancy* formatting of your **notebook** for emphasis. 
+
+You can make maths happen! $1+1=2$ 
+
+You can also make tables in text, but I find this confusing.
+
+
+ Person       Confusion Level
+------------- ----------------
+  Trish        Very confused 
+  Mya the cat  Smart        
+
+You want an image? Here have an image:
+![Sad Mya](IMG_0951.png)
+
+You might find this [cheatsheet](https://posit.co/wp-content/uploads/2022/10/rmarkdown-1.pdf) useful for helping you format your notebook.
+
+The main advantages of rmarkdown is that it can: 
+
+* help you adopt literate programming, where code is more friendly to a human rather than a computer
+* export your code for sharing 
+* publish your code in many formats.
+
+The format of this notebook will be:
+
+0. Setting up your r notebook
+1. Creating some simple plots
+2. Creating an interactive map using mapview
+3. Creating a dashboard
+4. Making a presentation
+
+# 0) Setting up your r notebook
+Usually there is a global setup chunk where you can establish what options you want for the entire document. This automatically runs and carries throughout your document. 
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(message = FALSE) # this tells r to not print messages for all of our subsequent chunks. This can be handy for very annoying packages that have loading messages
+
+# set up directory if not using github/project
+
+#load all the libraries that you use a lot
+library(tidyverse)
+```
+
+# 1) Creating some simple plots
+When you execute your code, your results will appear beneath the code, not in the console.
+```{r}
+plot(cars)
+```
+
+rmarkdown is compatible with many packages like ggplot
+
+```{r}
+mtcars <- mutate(mtcars,cyl=factor(cyl,ordered=TRUE,levels=c(4,6,8)))
+ggplot(mtcars,aes(x=mpg)) + geom_histogram(binwidth=5)
+
+my_scatplot <- ggplot(mtcars,aes(x=wt,y=mpg)) + geom_point()
+my_scatplot + xlab('Weight (x 1000lbs)') + ylab('Miles per Gallon') + geom_smooth()
+```
+
+# 2) Creating an interactive map using mapview
+
