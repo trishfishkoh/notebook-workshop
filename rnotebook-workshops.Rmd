@@ -33,6 +33,7 @@ You might find this [cheatsheet](https://posit.co/wp-content/uploads/2022/10/rma
 The main advantages of rmarkdown is that it can: 
 
 * help you adopt literate programming, where code is more friendly to a human rather than a computer
+* make it easier to keep track of changes
 * export your code for sharing 
 * publish your code in many formats.
 
@@ -41,11 +42,19 @@ The format of this notebook will be:
 0. Setting up your r notebook
 1. Creating some simple plots
 2. Creating an interactive map using mapview
-3. Creating a dashboard
-4. Making a presentation
+3. Wrap up
 
 # 0) Setting up your r notebook
 Usually there is a global setup chunk where you can establish what options you want for the entire document. This automatically runs and carries throughout your document. 
+
+To run this document you need to make sure you have the following packages downloaded. This chunk will not be run unless you manually run lines because of "eval=FALSE"
+```{r eval=FALSE}
+install.packages("rmarkdown", dep = TRUE)
+install.packages("tidyverse")
+install.packages("gapminder")
+install.packages("plotly")
+install.packages("mapview")
+```
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(message = FALSE) # this tells r to not print messages for all of our subsequent chunks. This can be handy for very annoying packages that have loading messages
@@ -73,4 +82,40 @@ my_scatplot + xlab('Weight (x 1000lbs)') + ylab('Miles per Gallon') + geom_smoot
 ```
 
 # 2) Creating an interactive map using mapview
+Notebook is also compatible with interactive plots! Wow how amazing.
 
+```{r}
+library(ggplot2)
+library(plotly)
+library(gapminder)
+
+p <- gapminder %>%
+  filter(year==1977) %>%
+  ggplot( aes(gdpPercap, lifeExp, size = pop, color=continent)) +
+  geom_point() +
+  theme_bw()
+
+ggplotly(p)
+
+```
+
+
+
+And it renders maps as well!
+```{r}
+#loading libraries for this chunk
+library(mapview)
+mapview(breweries)
+
+```
+
+# 3) Wrap up
+As you can see, r notebooks can be an amazing and fabulous tool!
+
+I would though be careful if you are working with fine scale mapping tools e.g. shape files can take a very very long time to render.
+
+After you have finished writing your document. You can click run all code to have everything compiled. You can also select preview to see what your file looks like.
+
+What you will notice after you have saved and compiled everything is that there is a little html file produced! This is your shareable report :)
+
+How good is that??
